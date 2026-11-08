@@ -34,4 +34,15 @@ python3 -m venv .venv
 
 Para testar rápido num subconjunto: `--ufs AC --anos 2022`.
 
+## Coleta (`src/coleta.py`)
+
+```bash
+.venv/bin/python src/coleta.py                 # tudo (~3 GB de DBC, ~70 min a ~700 KB/s)
+.venv/bin/python src/coleta.py --only rd       # só SIH/RD (também: ibge, aux, geo)
+```
+
+- Pode rodar de novo à vontade: arquivos completos são pulados, e downloads interrompidos (`.part`) são refeitos.
+- Resultado de referência (08/11/2026): 972 arquivos, 40.048.092 linhas, 113 colunas em todos os anos. São 3,0 GB em DBC e 2,1 GB em Parquet; os DBC originais ficam em `data/bronze/dbc/`.
+- Metadados em `reports/metadados_coleta.csv`; dicionário em `reports/dicionario_dados.md`.
+
 *(Seções de coleta, banco no Ubuntu Server e Power BI são completadas conforme as fases avançam.)*

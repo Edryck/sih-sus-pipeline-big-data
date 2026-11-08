@@ -54,4 +54,39 @@ Para testar rápido num subconjunto: `--ufs AC --anos 2022`.
 
 Saídas: `data/silver/sih_rd/ano=/uf_hospital=` (Parquet tipado, 35 colunas, ~1,6 GB) e `reports/log_limpeza.csv` (problema · decisão · justificativa · linhas antes/depois/afetadas), regravado a cada execução.
 
-*(Seções de coleta, banco no Ubuntu Server e Power BI são completadas conforme as fases avançam.)*
+## Gold (`src/gold.py`)
+
+```bash
+.venv/bin/python src/gold.py                 # ~5 min com carga no Postgres
+.venv/bin/python src/gold.py --sem-postgres  # só Parquet + CSV
+```
+
+Modelo estrela, grão mês × município de residência × UF do hospital × capítulo CID × faixa etária × sexo. AIH de longa permanência (`IDENT=5`) fica fora. Saídas: `data/gold/<tabela>/` (Parquet) e `data/gold/csv/<tabela>.csv` (`;`, UTF-8), e no Postgres o schema `dw`.
+
+| Tabela | Linhas |
+|---|---|
+| `fato_internacao_mensal` | 12.742.448 (soma = 39.630.392 internações) |
+| `dim_tempo` | 36 |
+| `dim_municipio` | 5.573 (inclui `-1` = ignorado; lat/lon do centróide) |
+| `dim_cid_capitulo` | 21 (cap. XX, causas externas, não aparece como diagnóstico principal) |
+| `dim_faixa_etaria` | 12 |
+| `populacao_municipio_ano` | 16.710 |
+
+O script confere que a soma da fato bate com a silver e que não há município órfão. A carga só roda com o `.env` completo; ela recria as tabelas e cria PK, FK e índices.
+
+## Banco no Ubuntu Server
+
+```bash
+sudo -u postgres psql -c "CREATE USER sih_user WITH PASSWORD '...'" -c "CREATE DATABASE sih OWNER sih_user"
+# /etc/postgresql/*/main/postgresql.conf
+listen_addresses = '*'
+# /etc/postgresql/*/main/pg_hba.conf
+host  sih  sih_user  192.168.3.0/24  scram-sha-256
+sudo ufw allow from 192.168.3.0/24 to any port 5432
+sudo systemctl restart postgresql
+psql -h <ip> -U sih_user sih -c 'select count(*) from dw.fato_internacao_mensal'
+```
+
+Credenciais vão no `.env` (fora do git), seguindo o `.env.example`.
+
+*(A seção do Power BI é completada na fase 6.)*

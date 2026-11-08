@@ -334,10 +334,15 @@ def collect_aux() -> None:
     cid["capitulo"] = cid["cid"].map(chapter_of).fillna("ignorado")
     cid.to_parquet(aux / "cid10.parquet", index=False)
 
-    mun = parse_cnv(cnv_dir / "BR_municip.cnv")
-    mun = mun[mun["codigo"].str.fullmatch(r"\d{6}")]
-    names = mun["descricao"].str[7:].str.strip()
-    pd.DataFrame({"cod_municipio_6": mun["codigo"], "nome": names}).to_parquet(aux / "municipios.parquet", index=False)
+    municipios_from_cnv(parse_cnv(cnv_dir / "BR_municip.cnv")).to_parquet(aux / "municipios.parquet", index=False)
+
+
+def municipios_from_cnv(cnv: pd.DataFrame) -> pd.DataFrame:
+    # capitais vêm como "355030,358001-358058" (código + distritos); o primeiro é o município
+    first = cnv["codigo"].str.split(",").str[0]
+    ok = first.str.fullmatch(r"\d{6}") & ~cnv["descricao"].str.contains("IGNORADO")
+    names = cnv.loc[ok, "descricao"].str[7:].str.strip()
+    return pd.DataFrame({"cod_municipio_6": first[ok], "nome": names}).reset_index(drop=True)
 
 
 def collect_geo() -> None:

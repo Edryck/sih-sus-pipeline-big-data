@@ -130,3 +130,10 @@ def test_metadata_identical_on_rerun(tmp_path):
     second = build_metadata(dbc_dir, tmp_path / "bronze" / "sih_rd", {})
     pd.testing.assert_frame_equal(first, second)
     assert first.iloc[0]["status"] == "ok" and first.iloc[0]["linhas"] == 3977
+
+
+def test_municipios_keep_capitals_with_code_lists():
+    mun = coleta.municipios_from_cnv(parse_cnv(FIXTURES / "sample_munic.cnv"))
+    assert "355030" in set(mun["cod_municipio_6"])
+    assert mun.set_index("cod_municipio_6").loc["355030", "nome"] == "SAO PAULO"
+    assert "110001" in set(mun["cod_municipio_6"])

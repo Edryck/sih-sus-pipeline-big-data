@@ -89,4 +89,24 @@ psql -h <ip> -U sih_user sih -c 'select count(*) from dw.fato_internacao_mensal'
 
 Credenciais vão no `.env` (fora do git), seguindo o `.env.example`.
 
-*(A seção do Power BI é completada na fase 6.)*
+## Visualizações, Power BI e relatório
+
+- `notebooks/projeto_final.ipynb` seção 4: 9 gráficos com título calculado dos dados, salvos em `reports/figuras/` (o notebook inteiro roda em ~25 min).
+- `reports/tutorial_powerbi.md`: passo a passo do dashboard (VM, conexão no Postgres, modelo, DAX, 2 páginas, plano B por Samba).
+- `reports/relatorio.md` → `reports/relatorio.pdf` (6 páginas). Para gerar o PDF sem LaTeX:
+
+```bash
+cd reports
+../.venv/lib/python3.12/site-packages/pypandoc/files/pandoc relatorio.md -s --css relatorio.css -o /tmp/relatorio.html
+../.venv/bin/python -c "import weasyprint; weasyprint.HTML('/tmp/relatorio.html', base_url='.').write_pdf('relatorio.pdf', stylesheets=['relatorio.css'])"
+```
+
+## Reprodução de ponta a ponta
+
+| Etapa | Comando | Tempo aprox. |
+|---|---|---|
+| Coleta | `.venv/bin/python src/coleta.py` | ~70 min (FTP) |
+| Limpeza | `.venv/bin/python src/tratamento.py` | ~23 min |
+| Gold + Postgres | `.venv/bin/python src/gold.py` | ~5 min |
+| Notebook | `.venv/bin/jupyter nbconvert --to notebook --execute --inplace notebooks/projeto_final.ipynb` | ~25 min |
+| Relatório | comandos acima | < 1 min |

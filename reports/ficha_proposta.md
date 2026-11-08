@@ -10,7 +10,7 @@
 
 **Fontes complementares:**
 - IBGE/SIDRA: população por município e ano (taxas por 100 mil) e IPCA mensal (deflação do valor aprovado).
-- Tabelas auxiliares do DATASUS: CID-10 (CSV) e conversões do TabWin (`.cnv`, largura fixa) para capítulos e municípios.
+- Tabelas auxiliares do DATASUS: conversões do TabWin (`.cnv`, largura fixa) para capítulos e municípios.
 - Malhas de UF e município (geobr) para mapas.
 
 ## Perguntas de pesquisa

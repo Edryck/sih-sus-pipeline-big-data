@@ -1,0 +1,9 @@
+@page { size: A4; margin: 2cm; @bottom-center { content: counter(page); font-size: 9pt; } }
+body { font-family: "DejaVu Serif", serif; font-size: 10.5pt; line-height: 1.35; }
+h1 { font-size: 14pt; margin: 14pt 0 4pt; } header h1.title { font-size: 18pt; margin: 0; }
+p.subtitle { font-size: 12pt; margin: 2pt 0; } p.author, p.date { margin: 0; }
+table { border-collapse: collapse; width: 100%; font-size: 9pt; margin: 6pt 0; }
+th, td { border-bottom: 1px solid #bbb; padding: 2pt 4pt; text-align: left; vertical-align: top; }
+figure { margin: 6pt 0; text-align: center; page-break-inside: avoid; }
+figcaption { font-size: 8.5pt; font-style: italic; }
+img { max-width: 100%; }

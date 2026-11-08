@@ -1,0 +1,17 @@
+problema,decisao,justificativa,linhas_antes,linhas_depois,linhas_afetadas
+duplicados exatos (todas as 113 colunas),removidos,mesma linha repetida infla contagens; EDA não achou nenhum,40048092,40048092,0
+nomes de colunas e tipos,"snake_case sem acento; datas, inteiros pequenos, double; códigos como texto",texto em object custa ~2 GB por coluna em pandas (EDA 2.1),40048092,40048092,0
+AIH de longa permanência (IDENT=5) repete N_AIH,mantida com longa_permanencia=True; fora das contagens,é continuação da mesma internação; contar duas vezes infla internações,40048092,40048092,417700
+SEXO sentinela (0/9) e código 3,"1→masculino, 2/3→feminino, resto→ignorado (categoria própria)",manter a linha evita perder internação; viés pequeno se ausência não for aleatória,40048092,40048092,0
+"RACA_COR=99 (sem informação), muito variável entre anos",categoria ignorado; não usar em comparação temporal,"19% em 2022 vs 0,02% em 2024: imputar criaria tendência falsa",40048092,40048092,2778438
+CAR_INT ausente/99,categoria ignorado,mesma lógica das categóricas,40048092,40048092,0
+idade inválida (COD_IDADE=0 ou > 120 anos),"idade nula, faixa ignorado; sem imputação",média/mediana distorceriam a distribuição; caso raro,40048092,40048092,454
+DIAS_PERM ≠ DT_SAIDA − DT_INTER,mantido DIAS_PERM como informado,"é o dado de faturamento do SUS; diferença documentada, não corrigida",40048092,40048092,413848
+VAL_TOT ≤ 0,val_tot nulo; internação continua nas contagens,valor zero não é reembolso real; excluído só das médias,40048092,40048092,124309
+DIAG_PRINC sem capítulo na tabela TabWin,U09/U10→cap. XXII; restantes→ignorado,códigos novos da COVID não estão na tabela TabWin,40048092,40048092,184
+capítulo CID ignorado após mapeamento,mantido como ignorado,sem informação suficiente,40048092,40048092,0
+MUNIC_RES inválido,"ignorado; fora das taxas, dentro das contagens",não dá para atribuir UF de residência,40048092,40048092,0
+join municípios (nome) sem correspondência,"mantido, marcado",nome é só rótulo,40048092,40048092,0
+join população IBGE sem correspondência,"mantido, marcado; fora das taxas",2023 interpolado; município novo/alterado pode faltar,40048092,40048092,0
+"outlier VAL_TOT (1,5×IQR por procedimento)","marcado outlier_val_tot, não removido",alta complexidade é fenômeno real (EDA 2.3),40048092,40048092,4673037
+"outlier DIAS_PERM (1,5×IQR por procedimento)","marcado outlier_dias_perm, não removido",longa permanência é fenômeno real (EDA 2.3),40048092,40048092,2829313

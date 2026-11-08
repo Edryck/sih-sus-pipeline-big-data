@@ -45,4 +45,13 @@ Para testar rápido num subconjunto: `--ufs AC --anos 2022`.
 - Resultado de referência (08/11/2026): 972 arquivos, 40.048.092 linhas, 113 colunas em todos os anos. São 3,0 GB em DBC e 2,1 GB em Parquet; os DBC originais ficam em `data/bronze/dbc/`.
 - Metadados em `reports/metadados_coleta.csv`; dicionário em `reports/dicionario_dados.md`.
 
+## Limpeza (`src/tratamento.py`)
+
+```bash
+.venv/bin/python src/tratamento.py               # base inteira, ~23 min; checa 36 meses, 27 UFs e joins
+.venv/bin/python src/tratamento.py --ufs AC --anos 2022   # teste rápido
+```
+
+Saídas: `data/silver/sih_rd/ano=/uf_hospital=` (Parquet tipado, 35 colunas, ~1,6 GB) e `reports/log_limpeza.csv` (problema · decisão · justificativa · linhas antes/depois/afetadas), regravado a cada execução.
+
 *(Seções de coleta, banco no Ubuntu Server e Power BI são completadas conforme as fases avançam.)*

@@ -1,0 +1,12 @@
+data/**
+!data/**/
+!data/**/.gitkeep
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/
+*.pdf
+!reports/relatorio.pdf
+!projeto-final-descrição-da-etapa-1.pdf
+

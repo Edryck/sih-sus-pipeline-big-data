@@ -1,0 +1,14 @@
+pyspark==4.0.1
+pandas==2.3.3
+pyarrow==21.0.0
+pyreaddbc==1.2.0
+dbfread==2.0.7
+requests==2.32.5
+geobr==0.2.2
+geopandas==1.1.0
+matplotlib==3.10.7
+seaborn==0.13.2
+plotly==6.3.1
+python-dotenv==1.1.1
+pytest==8.4.2
+jupyter==1.1.1
